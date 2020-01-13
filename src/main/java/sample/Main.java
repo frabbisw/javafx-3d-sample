@@ -19,11 +19,11 @@ public class Main extends Application {
     Group root;
     double width = 1000, height = 800, depth = 400;
     double frameWidth = width, frameHeight = height;
-    double cameraX = -450, cameraY = 600, cameraZ = -700;
-    double cameraView = 30, dcv = 5;
+    double cameraX = 0, cameraY = 2000, cameraZ = -400;
+    double cameraView = 30;
     double posX = 0, posY = 0, posZ = 0;
     double cameraAngle = 70;
-    double rootAngle = 45;
+    double rootAngle = 60;
     double dr = 1, dx = 10, dy = 10, dz = 10, dc=1;
 
     Stage primaryStage;
@@ -38,14 +38,23 @@ public class Main extends Application {
     private void build() {
         prepareRoot();
 
-        drawBox(posX, posY, posZ, Color.GREEN);
-        drawBox(posX, posY, posZ - 110, Color.YELLOW);
-        drawSphere(posX , posY , posZ - 220, Color.RED);
+        int dw = 110, lw = 1000, w = 100, r = 50;
+        int x = 100, y = 100, z = 100;
 
 
-        drawBox(posX + 200, posY , posZ , Color.BLUE);
-        drawBox(posX + 200, posY , posZ - 110, Color.BROWN);
-        drawSphere(posX + 200, posY , posZ - 220, Color.ORANGE);
+        drawSphere(posX , posY, posZ, Color.BROWN);
+        drawSphere(posX + lw, posY, posZ, Color.BLUE);
+        drawSphere(posX , posY + lw, posZ, Color.RED);
+        drawSphere(posX + lw, posY + lw, posZ, Color.ORANGE);
+
+        for(int i=1; i<=5; i++){
+            drawBox(posX , posY, posZ + dw * i, Color.BROWN);
+            drawBox(posX + lw, posY, posZ + dw * i, Color.BLUE);
+            drawBox(posX, posY + lw, posZ + dw * i, Color.RED);
+            drawBox(posX + lw, posY + lw, posZ + dw * i, Color.ORANGE);
+        }
+
+        drawBox(posX + lw/2, posY + lw/2, posZ + dw * 6, Color.GREEN, lw + x * 2, lw + x * 2, z);
 
         prepareScene();
     }
@@ -58,6 +67,17 @@ public class Main extends Application {
 
     private void drawBox(double x, double y, double z, Color color) {
         Box box = new Box(100, 100, 100);
+        box.setTranslateX(x);
+        box.setTranslateY(y);
+        box.setTranslateZ(z);
+
+        PhongMaterial material = new PhongMaterial(color);
+        box.setMaterial(material);
+
+        root.getChildren().add(box);
+    }
+    private void drawBox(double x, double y, double z, Color color, double width, double height, double depth) {
+        Box box = new Box(width, height, depth);
         box.setTranslateX(x);
         box.setTranslateY(y);
         box.setTranslateZ(z);
