@@ -93,7 +93,7 @@ public class Main extends Application {
         return camera;
     }
     private void prepareScene() {
-        primaryStage.setScene(new Scene(root, frameWidth, frameHeight, false));
+        primaryStage.setScene(new Scene(root, frameWidth, frameHeight, true));
         primaryStage.setTitle("Title");
         primaryStage.getScene().setCamera(prepareCamera());
 
@@ -104,21 +104,17 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.LEFT)) {
-                    if(rootAngle < 180)
-                        root.setRotate(rootAngle += dr);
+                    root.setRotate(rootAngle += dr);
                 }
                 else if (event.getCode().equals(KeyCode.RIGHT)) {
-                    if(rootAngle > 0)
-                        root.setRotate(rootAngle -= dr);
+                    root.setRotate(rootAngle -= dr);
                 }
 
                 else if (event.getCode().equals(KeyCode.UP)) {
-                    if(cameraAngle < 90)
-                        primaryStage.getScene().getCamera().setRotate(cameraAngle+=dc);
+                    primaryStage.getScene().getCamera().setRotate(cameraAngle+=dc);
                 }
                 else if (event.getCode().equals(KeyCode.DOWN)) {
-                    if(cameraAngle > -90)
-                        primaryStage.getScene().getCamera().setRotate(cameraAngle-=dc);
+                    primaryStage.getScene().getCamera().setRotate(cameraAngle-=dc);
                 }
 
                 else if (event.getCode().equals(KeyCode.A)) {
@@ -141,7 +137,6 @@ public class Main extends Application {
                 else if (event.getCode().equals(KeyCode.E)) {
                     primaryStage.getScene().getCamera().setTranslateZ(cameraZ+=dz);
                 }
-                System.out.println(rootAngle + " " + cameraAngle);
             }
         });
     }
