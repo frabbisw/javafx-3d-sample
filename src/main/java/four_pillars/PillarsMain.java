@@ -1,4 +1,4 @@
-package sample;
+package four_pillars;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -15,7 +15,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 
-public class Main extends Application {
+public class PillarsMain extends Application {
     Group root;
     double width = 1000, height = 800, depth = 400;
     double frameWidth = width, frameHeight = height;
@@ -66,15 +66,7 @@ public class Main extends Application {
     }
 
     private void drawBox(double x, double y, double z, Color color) {
-        Box box = new Box(100, 100, 100);
-        box.setTranslateX(x);
-        box.setTranslateY(y);
-        box.setTranslateZ(z);
-
-        PhongMaterial material = new PhongMaterial(color);
-        box.setMaterial(material);
-
-        root.getChildren().add(box);
+        drawBox(x, y, z, color,100, 100, 100);
     }
     private void drawBox(double x, double y, double z, Color color, double width, double height, double depth) {
         Box box = new Box(width, height, depth);
@@ -114,7 +106,7 @@ public class Main extends Application {
     }
     private void prepareScene() {
         primaryStage.setScene(new Scene(root, frameWidth, frameHeight, true));
-        primaryStage.setTitle("Title");
+        primaryStage.setTitle("Four Pillars");
         primaryStage.getScene().setCamera(prepareCamera());
 
         primaryStage.setResizable(false);
