@@ -1,62 +1,55 @@
-package curved_ball;
+package board;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 
-
-public class BallMain extends Application {
+public class BoardMain extends Application {
     Group root;
-    double width = 1000, height = 800, depth = 400;
-    double frameWidth = width, frameHeight = height;
-    double cameraX = -300, cameraY = 2000, cameraZ = -400;
+    double frameWidth = 1000, frameHeight = 800;
+    double cameraX = 0, cameraY = 1000, cameraZ = -600;
     double cameraView = 30;
     double posX = 0, posY = 0, posZ = 0;
-    double cameraAngle = 80;
+    double cameraAngle = 60;
     double rootAngle = 60;
     double dr = 1, dx = 10, dy = 10, dz = 10, dc=1;
-    double radius=50;
+
+    double boardWidth=100, boardHeight=100, boardDepth=20;
+
     Stage primaryStage;
-    ArrayList<Ball>balls;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        balls = new ArrayList<>();
-        build();
 
-        animate();
+        build();
     }
 
     private void build() {
         prepareRoot();
 
-        int dw = 110, lw = 1000, w = 100, r = 50;
-        int x = 100, y = 100, z = 20;
-        int dis = 250;
+        for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+                Color color;
+                if((i+j)%2==0)
+                    color = Color.BLACK;
+                else
+                    color= Color.WHITE;
 
-        balls.add(drawSphere(posX - dis, posY, posZ, radius, Color.RED));
-        balls.add(drawSphere(posX + dis, posY, posZ, radius, Color.BLUE));
-        balls.add(drawSphere(posX, posY + dis, posZ, radius, Color.YELLOW));
-        balls.add(drawSphere(posX, posY - dis , posZ, radius, Color.GOLD));
-
-        drawBox(posX, posY, posZ + dw * 6, Color.GREEN, lw + x * 2, lw + x * 2, z);
-
-        addLight(posX + 500, posY, posZ - 100, Color.WHITE);
-
+                drawBox(posX + i* boardWidth, posY + j * boardHeight, posZ, color);
+            }
+        }
         prepareScene();
     }
 
@@ -65,30 +58,9 @@ public class BallMain extends Application {
         root.setRotationAxis(Rotate.Z_AXIS);
         root.setRotate(rootAngle);
     }
-    private void animate() {
-        double maxZ = posZ + 110 * 6 - radius;
-        double minZ = 0;
 
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-
-                while (true){
-                    try {
-                        for(Ball ball : balls){
-                            if(ball.getZ() < minZ | ball.getZ() > maxZ)
-                                ball.changeDirection();
-
-                            ball.move();
-                        }
-                        sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
+    private void drawBox(double x, double y, double z, Color color) {
+        drawBox(x, y, z, color,boardWidth, boardHeight, boardDepth);
     }
     private void drawBox(double x, double y, double z, Color color, double width, double height, double depth) {
         Box box = new Box(width, height, depth);
@@ -101,30 +73,7 @@ public class BallMain extends Application {
 
         root.getChildren().add(box);
     }
-    private Ball drawSphere(double x, double y, double z, double radius, Color color) {
-        Ball ball = new Ball(radius, x, y, z, color);
-        ball.setDt(.1);
-        ball.setVelocity(0);
 
-        ball.getSphere().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ball.reset();
-            }
-        });
-
-        root.getChildren().add(ball.getSphere());
-
-        return ball;
-    }
-    private void addLight(double x, double y, double z, Color color) {
-        PointLight light = new PointLight(color);
-        light.setTranslateX(x);
-        light.setTranslateY(y);
-        light.setTranslateZ(z);
-
-        root.getChildren().add(light);
-    }
     private PerspectiveCamera prepareCamera() {
         PerspectiveCamera camera = new PerspectiveCamera(false);
         camera.setTranslateX(cameraX);
