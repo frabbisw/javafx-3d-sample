@@ -7,4 +7,6 @@ requirements:
 2. intellij idea
 
 run:
-go to any of the 4 packeg -> open main class -> run main class
+1. go to any of the 4 packeg
+2. open main class
+3. run main class
